@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_riverpod:
   riverpod_annotation:
+  flutter_material_color_picker:
 
 
 dev_dependencies:

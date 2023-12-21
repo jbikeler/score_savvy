@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:score_savvy_app/models/player_model.dart';
+import 'package:score_savvy_app/notifiers/players_notifier.dart';
+import 'package:score_savvy_app/notifiers/roundcount_notifier.dart';
+import 'package:score_savvy_app/widgets/add_player_widget.dart';
 import 'dart:math' as math;
+import 'package:score_savvy_app/widgets/squarecard_widget.dart';
 
 class HomePage extends StatelessWidget {
   @override
 
   String gameName = 'My Game Name';
-  int roundCount = 0;
   Color themeColor = const Color.fromARGB(255, 93, 143, 235); //put in provider
 
   Widget build(BuildContext context) {
@@ -33,23 +38,22 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
 //START Round Header
-                  Row(
+                  Consumer(builder: (context, ref, child) { return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
 //START Decrement Round Btn
                       SizedBox(
                         width: 40,
                         height: 40,
+                        
                         child: Container(
                           decoration: BoxDecoration(
                             color: themeColor,
-                            borderRadius: const BorderRadius.all(Radius.circular(4))),
+                            borderRadius: const BorderRadius.all(Radius.circular(30))),
                           child: TextButton(
                             onPressed: () {
-                              if (roundCount > 0){
-                                roundCount--;
-                                print(roundCount);
-                              }
+                              //decrement Round
+                              ref.read(roundNotifierProvider.notifier).countDown();
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -64,7 +68,7 @@ class HomePage extends StatelessWidget {
 //END Decrement Round Btn
 //START Round Text
                       Text(
-                        'Round $roundCount',
+                        'Round ${ref.watch(roundNotifierProvider)}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontFamily: 'Wolfskin',
@@ -79,11 +83,11 @@ class HomePage extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             color: themeColor,
-                            borderRadius: const BorderRadius.all(Radius.circular(4))),
+                            borderRadius: const BorderRadius.all(Radius.circular(30))),
                           child: TextButton(
                             onPressed: () {
-                                roundCount++;
-                                print(roundCount);
+                              //increment Round
+                              ref.read(roundNotifierProvider.notifier).countUp();
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -97,7 +101,7 @@ class HomePage extends StatelessWidget {
                       ),
 //END Increment Round Btn
                     ],
-                  ),
+                  ); },),
 //END Round Header
                 ],
               ),
@@ -109,132 +113,38 @@ class HomePage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                  child: GridView.count(
+                  child: Consumer(builder: (context, ref, child) { 
+                    List<Player> players = ref.watch(playersNotifierProvider);
+                    return GridView.count(
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 3, // You can change this value to adjust the number of columns
                     shrinkWrap: true,
-                    children: List.generate(10, (index) {
+                    children: List.generate(players.length, (index) {
                       return Center(
-                        child: SquareCard(playerName: "Player Name", playerColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),),
+                        child: SquareCard(playerName: players[index].name, playerColor: players[index].color, playerIndex: index,),
                       );
                     }),
-                  ),
+                  ); },),
                 ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class SquareCard extends StatelessWidget {
-  final String playerName;
-  final Color playerColor;
-
-  SquareCard({Key? key, required this.playerName, required this.playerColor}) : super(key: key);
-  Color themeColor = const Color.fromARGB(255, 93, 143, 235); //put in provider
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0)
-          ),
-          color: const Color.fromARGB(255, 28, 26, 75),
-          elevation: 3,
-          margin: const EdgeInsets.all(8),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                  decoration: BoxDecoration(
-                    color: themeColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(4))),
-                  child: const Text(
-                    '1000',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontFamily: 'Wolfskin',
-                      color: Colors.white
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 93, 143, 235),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                        child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            shape: const RoundedRectangleBorder()),
-                          child: const Icon(
-                            Icons.remove,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(child: Container()),
-                    SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: themeColor,
-                          borderRadius: const BorderRadius.all(Radius.circular(4))),
-                        child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            shape: const RoundedRectangleBorder()),
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CreatePlayerDialog();
+            });
+        },
+        backgroundColor: themeColor,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
         ),
-        Positioned(
-          left: 20,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: playerColor
-            ),
-            child: Text(
-              playerName,
-              style: const TextStyle(
-                fontFamily: 'Wolfskin',
-                fontSize: 16,
-                color: Colors.white
-              ),
-            ),
-          ),
-        ),
-      ]
+      ),
     );
   }
 }

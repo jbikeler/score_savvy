@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 class TaskForm extends StatelessWidget {
@@ -15,7 +16,7 @@ class TaskForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      title: const Text('New Task'),
+      title: const Text('Game Info'),
       content: Center(
         child: Padding(
           padding: const EdgeInsets.all(8),
@@ -24,9 +25,9 @@ class TaskForm extends StatelessWidget {
               TextFormField(
                 controller: gameNameController,
                 decoration: const InputDecoration(
-                  labelText: "Task Name",
+                  labelText: "Game Name",
                   icon: Icon(Icons.task),
-                  hintText: 'New Task',
+                  hintText: 'Enter Game Name',
                 ),
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(25),
@@ -38,17 +39,19 @@ class TaskForm extends StatelessWidget {
       ),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
+//START Cancel Button
         TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 222, 112, 148),
-            ),
-            child: const Text("Cancel",
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+          style: TextButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 222, 112, 148),
+          ),
+          child: const Text("Cancel",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
+//END Cancel Button
         // Consumer(
         //   builder: (context, value, child) => TextButton(
         //     style: TextButton.styleFrom(
@@ -66,3 +69,4 @@ class TaskForm extends StatelessWidget {
     );
   }
 }
+
