@@ -13,8 +13,8 @@ class CreatePlayerDialog extends ConsumerWidget {
   final pointsController = TextEditingController();// need to be color picker
 
   void createPlayer(WidgetRef ref) {
-    ref.read(playersNotifierProvider.notifier).addPlayer(nameController.text, colorController);
-
+    ref.read(playersNotifierProvider.notifier)
+      .addPlayer((nameController.text == '') ? 'player' : nameController.text, colorController);
   }
  
   @override
@@ -33,6 +33,7 @@ class CreatePlayerDialog extends ConsumerWidget {
                 decoration: const InputDecoration(
                   labelText: "Name",
                   icon: Icon(Icons.task),
+                  hintText: 'Player'
                 ),
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(11)

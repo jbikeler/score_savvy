@@ -1,45 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:score_savvy_app/notifiers/players_notifier.dart';
 
 
-class TaskForm extends StatelessWidget {
-  TaskForm({super.key});
+class AdjustPointsForm extends ConsumerWidget {
+  AdjustPointsForm({super.key, required this.playerIndex ,required this.isAdding});
 
-  final nameController = TextEditingController();
   final pointsController = TextEditingController();
+  bool isAdding;
+  int playerIndex;
 
-  void deleteTask(BuildContext context){
-    print("need delete logic: add_points_widget.dart -> deleteTask()");
+  void adjustPoints(BuildContext context, WidgetRef ref){
+    if (isAdding){
+      ref.read(playersNotifierProvider.notifier)
+        .addPointsToScore(playerIndex, (pointsController.text == '') ? 1 : int.parse(pointsController.text));
+    } 
+    else {
+      ref.read(playersNotifierProvider.notifier).
+        removePointsFromScore(playerIndex, (pointsController.text == '') ? 1 : int.parse(pointsController.text));
+    }
+    Navigator.of(context).pop();
   }
  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
+      backgroundColor: (isAdding) ? Color.fromARGB(255, 188, 226, 212) : Color.fromARGB(255, 246, 230, 229),
       scrollable: true,
-      title: const Text('New Task'),
+      title: const Text('Adjust Points'),
       content: Center(
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
               TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: "Task Name",
-                  icon: Icon(Icons.task),
-                  hintText: 'New Task',
-                ),
-              ),
-              TextFormField(
+                autofocus: true,
                 controller: pointsController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Points",
-                  icon: Icon(Icons.star),
-                  hintText: "10",
+                  icon: Icon((isAdding) ? Icons.add_circle : Icons.do_disturb_on),
+                  hintText: "1",
                 ),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(4),
+                  LengthLimitingTextInputFormatter(10),
                 ],
                 keyboardType: TextInputType.number,
               ),
@@ -60,19 +65,17 @@ class TaskForm extends StatelessWidget {
               Navigator.of(context).pop();
             },
         ),
-        // Consumer(
-        //   builder: (context, value, child) => TextButton(
-        //     style: TextButton.styleFrom(
-        //       backgroundColor: const Color.fromARGB(255, 70, 195, 128),
-        //     ),
-        //     child: const Text("Create",
-        //       style: TextStyle(color: Colors.white),
-        //     ),
-        //     onPressed: () {
-        //       createTask(context);
-        //     },
-        //   ),
-        // ),
+        TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 97, 200, 166),
+            ),
+            child: const Text("Confirm",
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              adjustPoints(context, ref);
+            },
+        ),
       ],
     );
   }

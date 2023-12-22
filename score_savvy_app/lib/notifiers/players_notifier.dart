@@ -15,6 +15,11 @@ class PlayersNotifier extends _$PlayersNotifier {
     Player newPlayer = Player(name: playerName, color: playerColor);
     state = [...state, newPlayer];
   }
+  
+  void removePlayer(int playerIndex) {
+    state.removeAt(playerIndex);
+    state = [...state];
+  }
 
   void addPointsToScore(int playerIndex, int amount) {
     final newState = [...state];

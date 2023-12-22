@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:score_savvy_app/models/player_model.dart';
 import 'package:score_savvy_app/notifiers/players_notifier.dart';
+import 'package:score_savvy_app/widgets/add_points_widget.dart';
+import 'package:score_savvy_app/widgets/deleteplayer_widget.dart';
 
 class SquareCard extends ConsumerWidget {
   final String playerName;
@@ -57,7 +59,11 @@ class SquareCard extends ConsumerWidget {
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                         child: TextButton(
                           onPressed: () {
-                            ref.read(playersNotifierProvider.notifier).removePointsFromScore(playerIndex, 10);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AdjustPointsForm(playerIndex: playerIndex, isAdding: false,);
+                            });
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -79,7 +85,11 @@ class SquareCard extends ConsumerWidget {
                           borderRadius: const BorderRadius.all(Radius.circular(30))),
                         child: TextButton(
                           onPressed: () {
-                            ref.read(playersNotifierProvider.notifier).addPointsToScore(playerIndex, 10);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AdjustPointsForm(playerIndex: playerIndex, isAdding: true,);
+                            });
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -121,6 +131,22 @@ class SquareCard extends ConsumerWidget {
           ),
         ),
 //END Player Name
+        Positioned(
+          left: 80,
+          child: IconButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return DeletePlayerForm(playerName: playerName, playerIndex: playerIndex,);
+              });
+          },
+          icon: const Icon(
+            Icons.remove_circle,
+            color: Color.fromARGB(255, 238, 84, 72),
+          )
+          )
+        ),
       ]
     );
   }

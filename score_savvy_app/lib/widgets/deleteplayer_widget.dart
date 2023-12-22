@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:score_savvy_app/notifiers/gamename_notifier.dart';
 import 'package:score_savvy_app/notifiers/players_notifier.dart';
 
 
-class GameNameForm extends ConsumerWidget {
-  GameNameForm({super.key});
+class DeletePlayerForm extends ConsumerWidget {
+  DeletePlayerForm({super.key, required this.playerName, required this.playerIndex});
 
-  final nameController = TextEditingController();
-
+  String playerName;
+  int playerIndex;
  
-  void commitName(BuildContext context, WidgetRef ref) {
-    ref.read(gameNameNotifierProvider.notifier).editName(nameController.text);
+  void commitClear(BuildContext context, WidgetRef ref) {
+    ref.read(playersNotifierProvider.notifier).removePlayer(playerIndex);
     Navigator.of(context).pop();
   }
 
@@ -20,24 +18,33 @@ class GameNameForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       scrollable: true,
-      title: const Text('Game Title'),
+      title: Center(child: const Text('Delete Player?')),
       content: Center(
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(8),
           child: Column(
             children: [
-              TextFormField(
-                autofocus: true,
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: "Title",
-                  icon: Icon(Icons.task),
-                  hintText: ref.watch(gameNameNotifierProvider),
-                ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(16),
-                ],
-              ),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: "Are you sure you want to delete ",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12
+                    ),
+                  ),
+                  TextSpan(
+                    text: "$playerName?",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ]
+              )) 
             ],
           ),
         ),
@@ -63,7 +70,7 @@ class GameNameForm extends ConsumerWidget {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              commitName(context, ref);
+              commitClear(context, ref);
             },
         ),
       ],

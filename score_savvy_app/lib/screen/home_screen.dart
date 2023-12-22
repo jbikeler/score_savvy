@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:score_savvy_app/models/player_model.dart';
+import 'package:score_savvy_app/notifiers/gamename_notifier.dart';
 import 'package:score_savvy_app/notifiers/players_notifier.dart';
 import 'package:score_savvy_app/notifiers/roundcount_notifier.dart';
 import 'package:score_savvy_app/widgets/add_player_widget.dart';
-import 'dart:math' as math;
+import 'package:score_savvy_app/widgets/clearform_widgets.dart';
+import 'package:score_savvy_app/widgets/gameform_widget.dart';
+import 'package:score_savvy_app/widgets/savegame_widget.dart';
 import 'package:score_savvy_app/widgets/squarecard_widget.dart';
 
 class HomePage extends StatelessWidget {
   @override
 
-  String gameName = 'My Game Name';
   Color themeColor = const Color.fromARGB(255, 93, 143, 235); //put in provider
 
   Widget build(BuildContext context) {
@@ -27,14 +29,51 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Text(
-                      gameName,
-                      style: const TextStyle(
-                        fontFamily: 'Scrubland',
-                        color: Colors.white,
-                        fontSize: 35
-                      ),
+                    child: Consumer(builder: (context, ref, child) { return Text(
+                          ref.watch(gameNameNotifierProvider),
+                          style: const TextStyle(
+                            fontFamily: 'Scrubland',
+                            color: Colors.white,
+                            fontSize: 35
+                          ),
+                        );
+                     },
                     )
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return GameNameForm();
+                            });
+                        },
+                        child: Icon(Icons.edit)
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SaveDataForm();
+                            });
+                        },
+                        child: Icon(Icons.save)
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ClearAllForm();
+                            });
+                        },
+                        child: Icon(Icons.delete)
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8.0),
 //START Round Header

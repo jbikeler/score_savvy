@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:score_savvy_app/notifiers/gamename_notifier.dart';
 import 'package:score_savvy_app/notifiers/players_notifier.dart';
+import 'package:score_savvy_app/notifiers/roundcount_notifier.dart';
 
 
-class GameNameForm extends ConsumerWidget {
-  GameNameForm({super.key});
+class ClearAllForm extends ConsumerWidget {
+  ClearAllForm({super.key});
 
-  final nameController = TextEditingController();
 
  
-  void commitName(BuildContext context, WidgetRef ref) {
-    ref.read(gameNameNotifierProvider.notifier).editName(nameController.text);
+  void commitClear(BuildContext context, WidgetRef ref) {
+    ref.invalidate(gameNameNotifierProvider);
+    ref.invalidate(roundNotifierProvider);
+    ref.invalidate(playersNotifierProvider);
     Navigator.of(context).pop();
   }
 
@@ -20,23 +21,17 @@ class GameNameForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       scrollable: true,
-      title: const Text('Game Title'),
-      content: Center(
+      title: Center(child: const Text('Clear Data?')),
+      content: const Center(
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(8),
           child: Column(
             children: [
-              TextFormField(
-                autofocus: true,
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: "Title",
-                  icon: Icon(Icons.task),
-                  hintText: ref.watch(gameNameNotifierProvider),
+              Text("Are you sure you want to clear game? This will remove all players without saving.",
+              textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12
                 ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(16),
-                ],
               ),
             ],
           ),
@@ -63,7 +58,7 @@ class GameNameForm extends ConsumerWidget {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              commitName(context, ref);
+              commitClear(context, ref);
             },
         ),
       ],

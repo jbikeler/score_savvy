@@ -39,6 +39,10 @@ dependencies:
   flutter_riverpod:
   riverpod_annotation:
   flutter_material_color_picker:
+  drift: ^2.14.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.0.0
+  path: ^1.8.3
 
 
 dev_dependencies:
@@ -48,6 +52,7 @@ dev_dependencies:
   custom_lint:
   riverpod_generator:
   riverpod_lint:
+  drift_dev: ^2.14.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
