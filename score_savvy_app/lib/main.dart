@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:score_savvy_app/data/database.dart';
+import 'package:score_savvy_app/locator.dart';
 import 'package:score_savvy_app/screen/home_screen.dart';
 
 void main() {
 
+  setup(); //sets up the get in singletons. currently used for accessing the database
+
   runApp(
-    const ProviderScope(
+    const ProviderScope( //ProviderScope wraps root widget so we can access Riverpod
       child: MyApp()
     )
   );

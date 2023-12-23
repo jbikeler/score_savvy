@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:score_savvy_app/data/database.dart';
 import 'package:score_savvy_app/notifiers/gamename_notifier.dart';
 import 'package:score_savvy_app/notifiers/players_notifier.dart';
 import 'package:score_savvy_app/notifiers/roundcount_notifier.dart';
-import 'package:score_savvy_app/providers/database_provider.dart';
 
 
 class SaveDataForm extends ConsumerWidget {
