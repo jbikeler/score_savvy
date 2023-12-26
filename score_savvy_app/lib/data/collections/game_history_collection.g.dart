@@ -99,16 +99,17 @@ GameHistory _gameHistoryDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = GameHistory();
-  object.id = id;
-  object.name = reader.readStringOrNull(offsets[0]);
-  object.players = reader.readObjectList<PlayerHistory>(
-    offsets[1],
-    PlayerHistorySchema.deserialize,
-    allOffsets,
-    PlayerHistory(),
+  final object = GameHistory(
+    name: reader.readStringOrNull(offsets[0]),
+    players: reader.readObjectList<PlayerHistory>(
+      offsets[1],
+      PlayerHistorySchema.deserialize,
+      allOffsets,
+      PlayerHistory(),
+    ),
+    round: reader.readLongOrNull(offsets[2]),
   );
-  object.round = reader.readLongOrNull(offsets[2]);
+  object.id = id;
   return object;
 }
 
@@ -745,7 +746,7 @@ const PlayerHistorySchema = Schema(
     r'color': PropertySchema(
       id: 0,
       name: r'color',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'name': PropertySchema(
       id: 1,
@@ -771,12 +772,6 @@ int _playerHistoryEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.color;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -791,7 +786,7 @@ void _playerHistorySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.color);
+  writer.writeLong(offsets[0], object.color);
   writer.writeString(offsets[1], object.name);
   writer.writeLong(offsets[2], object.points);
 }
@@ -803,7 +798,7 @@ PlayerHistory _playerHistoryDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PlayerHistory(
-    color: reader.readStringOrNull(offsets[0]),
+    color: reader.readLongOrNull(offsets[0]),
     name: reader.readStringOrNull(offsets[1]),
     points: reader.readLongOrNull(offsets[2]),
   );
@@ -818,7 +813,7 @@ P _playerHistoryDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
@@ -849,58 +844,49 @@ extension PlayerHistoryQueryFilter
   }
 
   QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
-      colorEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      colorEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'color',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
       colorGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'color',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
       colorLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'color',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
       colorBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -909,77 +895,6 @@ extension PlayerHistoryQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
-      colorStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'color',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
-      colorEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'color',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
-      colorContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'color',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
-      colorMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'color',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
-      colorIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'color',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<PlayerHistory, PlayerHistory, QAfterFilterCondition>
-      colorIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'color',
-        value: '',
       ));
     });
   }

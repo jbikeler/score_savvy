@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:score_savvy_app/locator.dart';
 import 'package:score_savvy_app/screen/home_screen.dart';
+import 'package:score_savvy_app/screen/settings_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
 
   setup(); //sets up the get in singletons. currently used for accessing the database
 
@@ -26,7 +28,11 @@ class MyApp extends StatelessWidget {
         Color.fromARGB(255, 93, 143, 235)),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      initialRoute: "/",
+      routes: {
+        '/':(context) => HomePage(),
+        '/settings':(context) => SettingsScreen()
+      },
     );
   }
 }

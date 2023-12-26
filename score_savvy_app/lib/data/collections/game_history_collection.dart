@@ -4,12 +4,16 @@ part 'game_history_collection.g.dart';
 
 @collection
 class GameHistory {
+  GameHistory({
+    this.name,
+    this.round,
+    this.players,
+  });
+
   Id id = Isar.autoIncrement; // you can also use id = null to auto increment
 
   String? name;
-
   int? round;
-
   List<PlayerHistory>? players;
 }
 
@@ -22,5 +26,5 @@ class PlayerHistory {
   });
   String? name;
   int? points;
-  String? color;
+  int? color;
 }

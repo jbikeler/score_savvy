@@ -29,15 +29,24 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Consumer(builder: (context, ref, child) { return Text(
-                          ref.watch(gameNameNotifierProvider),
-                          style: const TextStyle(
-                            fontFamily: 'Scrubland',
-                            color: Colors.white,
-                            fontSize: 35
-                          ),
-                        );
-                     },
+                    child: TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return GameNameForm();
+                          });
+                      },
+                      child: Consumer(builder: (context, ref, child) { return Text(
+                            ref.watch(gameNameNotifierProvider),
+                            style: const TextStyle(
+                              fontFamily: 'Scrubland',
+                              color: Colors.white,
+                              fontSize: 35
+                            ),
+                          );
+                       },
+                      ),
                     )
                   ),
                   Row(
@@ -45,13 +54,9 @@ class HomePage extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return GameNameForm();
-                            });
+                        //settings logic
                         },
-                        child: Icon(Icons.edit)
+                        child: Icon(Icons.settings)
                       ),
                       TextButton(
                         onPressed: () {
