@@ -29,6 +29,15 @@
             "presentation": {"echo": true, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
         },
         {
+            "label": "flutter clean",
+            "type": "shell",
+            "command": "flutter clean",
+            "options": {
+                "cwd": "${workspaceFolder}/score_savvy_app/"
+            },
+            "presentation": {"echo": true, "reveal": "always", "focus": false, "panel": "shared", "showReuseMessage": false, "clear": true},
+        },
+        {
             "label": "flutter devices",
             "type": "shell",
             "command": "flutter devices",

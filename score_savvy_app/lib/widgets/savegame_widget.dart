@@ -27,7 +27,7 @@ class SaveDataForm extends ConsumerWidget {
       round: ref.read(roundNotifierProvider),
       players: playerList
     );
-    await locator.get<Isar>().writeTxn(() async {
+    await locator.get<Isar>().writeTxn(() async { //access Isar DB and add a gamehistory entry in db table
       await locator.get<Isar>().gameHistorys.put(newHistory);
       });
   }
