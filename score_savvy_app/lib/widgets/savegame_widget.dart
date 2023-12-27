@@ -1,35 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:isar/isar.dart';
-import 'package:score_savvy_app/data/collections/game_history_collection.dart';
 import 'package:score_savvy_app/locator.dart';
-import 'package:score_savvy_app/notifiers/gamename_notifier.dart';
-import 'package:score_savvy_app/notifiers/players_notifier.dart';
-import 'package:score_savvy_app/notifiers/roundcount_notifier.dart';
+import 'package:score_savvy_app/util_services/savegame_service.dart';
 
 
 class SaveDataForm extends ConsumerWidget {
   SaveDataForm({super.key});
 
  
-  void saveGameData(BuildContext context, WidgetRef ref) async {
-    List<PlayerHistory> playerList = []; //make playerhistory list
-    ref.read(playersNotifierProvider).forEach((element) { //loop through currrent players in player notifier and make a list of playerhistory's
-      final player = PlayerHistory(
-        name: element.name,
-        points: element.points,
-        color: element.color.value //value gets the color as an int
-      );
-      playerList.add(player);
-    });
-    final newHistory = GameHistory(
-      name: ref.read(gameNameNotifierProvider),
-      round: ref.read(roundNotifierProvider),
-      players: playerList
-    );
-    await locator.get<Isar>().writeTxn(() async { //access Isar DB and add a gamehistory entry in db table
-      await locator.get<Isar>().gameHistorys.put(newHistory);
-      });
+  void saveGameData(BuildContext context, WidgetRef ref) {
+    locator.get<SaveService>().saveGameHistory(ref);
   }
 
   @override

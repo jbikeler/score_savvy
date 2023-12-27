@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class Player {
   String name;
-  int points = 0;
-  Color color = Colors.red;
+  int points;
+  Color color;
 
-  Player({required this.name, required this.color});
+  Player({required this.name, required this.color, this.points = 0});
 
   void addPoints(int amount){
     points += amount;

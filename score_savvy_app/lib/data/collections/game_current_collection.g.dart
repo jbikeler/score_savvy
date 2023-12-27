@@ -100,6 +100,7 @@ GameCurrent _gameCurrentDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = GameCurrent(
+    id: id,
     name: reader.readStringOrNull(offsets[0]),
     players: reader.readObjectList<PlayerCurrent>(
       offsets[1],
@@ -109,7 +110,6 @@ GameCurrent _gameCurrentDeserialize(
     ),
     round: reader.readLongOrNull(offsets[2]),
   );
-  object.id = id;
   return object;
 }
 
@@ -137,7 +137,7 @@ P _gameCurrentDeserializeProp<P>(
 }
 
 Id _gameCurrentGetId(GameCurrent object) {
-  return object.id;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _gameCurrentGetLinks(GameCurrent object) {
@@ -229,8 +229,24 @@ extension GameCurrentQueryWhere
 
 extension GameCurrentQueryFilter
     on QueryBuilder<GameCurrent, GameCurrent, QFilterCondition> {
+  QueryBuilder<GameCurrent, GameCurrent, QAfterFilterCondition> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<GameCurrent, GameCurrent, QAfterFilterCondition> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
   QueryBuilder<GameCurrent, GameCurrent, QAfterFilterCondition> idEqualTo(
-      Id value) {
+      Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -240,7 +256,7 @@ extension GameCurrentQueryFilter
   }
 
   QueryBuilder<GameCurrent, GameCurrent, QAfterFilterCondition> idGreaterThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -253,7 +269,7 @@ extension GameCurrentQueryFilter
   }
 
   QueryBuilder<GameCurrent, GameCurrent, QAfterFilterCondition> idLessThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -266,8 +282,8 @@ extension GameCurrentQueryFilter
   }
 
   QueryBuilder<GameCurrent, GameCurrent, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {

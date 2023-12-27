@@ -13,8 +13,6 @@ import 'package:score_savvy_app/widgets/squarecard_widget.dart';
 class HomePage extends StatelessWidget {
   @override
 
-  Color themeColor = const Color.fromARGB(255, 93, 143, 235); //put in provider
-
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 15, 20, 58),
@@ -92,7 +90,7 @@ class HomePage extends StatelessWidget {
                         
                         child: Container(
                           decoration: BoxDecoration(
-                            color: themeColor,
+                            color: Colors.amber,//ref.read(appThemeColorProvider),
                             borderRadius: const BorderRadius.all(Radius.circular(30))),
                           child: TextButton(
                             onPressed: () {
@@ -126,7 +124,7 @@ class HomePage extends StatelessWidget {
                         height: 40,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: themeColor,
+                            color: Colors.amber,//ref.read(appThemeColorProvider),
                             borderRadius: const BorderRadius.all(Radius.circular(30))),
                           child: TextButton(
                             onPressed: () {
@@ -175,7 +173,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Consumer(builder: (context, ref, child) { return FloatingActionButton(
         onPressed: () {
           showDialog(
             context: context,
@@ -183,12 +181,12 @@ class HomePage extends StatelessWidget {
               return CreatePlayerDialog();
             });
         },
-        backgroundColor: themeColor,
+        backgroundColor: Colors.amber,//ref.read(appThemeColorProvider),
         child: const Icon(
           Icons.add,
           color: Colors.white,
         ),
-      ),
+      ); },),
     );
   }
 }
