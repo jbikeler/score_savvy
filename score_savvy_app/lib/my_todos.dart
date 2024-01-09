@@ -3,5 +3,4 @@
 //TODO: change title to a button to edit
 //TODO: change edit button to settings
 //TODO: save current
-//TODO: save histories
-//TODO: Riverpod themecolor
+//TODO: display historyies

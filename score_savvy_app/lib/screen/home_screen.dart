@@ -4,6 +4,7 @@ import 'package:score_savvy_app/models/player_model.dart';
 import 'package:score_savvy_app/notifiers/gamename_notifier.dart';
 import 'package:score_savvy_app/notifiers/players_notifier.dart';
 import 'package:score_savvy_app/notifiers/roundcount_notifier.dart';
+import 'package:score_savvy_app/providers/colortheme_provider.dart';
 import 'package:score_savvy_app/widgets/add_player_widget.dart';
 import 'package:score_savvy_app/widgets/clearform_widgets.dart';
 import 'package:score_savvy_app/widgets/gameform_widget.dart';
@@ -52,9 +53,9 @@ class HomePage extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                        //settings logic
+                        Navigator.pushNamed(context, "/settings");
                         },
-                        child: Icon(Icons.settings)
+                        child: const Icon(Icons.settings)
                       ),
                       TextButton(
                         onPressed: () {
@@ -64,7 +65,7 @@ class HomePage extends StatelessWidget {
                               return SaveDataForm();
                             });
                         },
-                        child: Icon(Icons.save)
+                        child: const Icon(Icons.save)
                       ),
                       TextButton(
                         onPressed: () {
@@ -74,7 +75,13 @@ class HomePage extends StatelessWidget {
                               return ClearAllForm();
                             });
                         },
-                        child: Icon(Icons.delete)
+                        child: const Icon(Icons.delete)
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/histories");
+                        },
+                        child: const Icon(Icons.history)
                       ),
                     ],
                   ),
@@ -90,7 +97,7 @@ class HomePage extends StatelessWidget {
                         
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.amber,//ref.read(appThemeColorProvider),
+                            color: ref.read(appThemeColorProvider),
                             borderRadius: const BorderRadius.all(Radius.circular(30))),
                           child: TextButton(
                             onPressed: () {
@@ -124,7 +131,7 @@ class HomePage extends StatelessWidget {
                         height: 40,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.amber,//ref.read(appThemeColorProvider),
+                            color: ref.read(appThemeColorProvider),
                             borderRadius: const BorderRadius.all(Radius.circular(30))),
                           child: TextButton(
                             onPressed: () {
@@ -181,7 +188,7 @@ class HomePage extends StatelessWidget {
               return CreatePlayerDialog();
             });
         },
-        backgroundColor: Colors.amber,//ref.read(appThemeColorProvider),
+        backgroundColor: ref.read(appThemeColorProvider),
         child: const Icon(
           Icons.add,
           color: Colors.white,

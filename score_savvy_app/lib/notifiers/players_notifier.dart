@@ -26,23 +26,27 @@ class PlayersNotifier extends _$PlayersNotifier {
   void addPlayer(String playerName, Color playerColor) async {
     Player newPlayer = Player(name: playerName, color: playerColor);
     state = [...state, newPlayer];
+    locator.get<SaveService>().updatePlayers(state);
   }
   
   void removePlayer(int playerIndex) {
     state.removeAt(playerIndex);
     state = [...state];
+    locator.get<SaveService>().updatePlayers(state);
   }
 
   void addPointsToScore(int playerIndex, int amount) {
     final newState = [...state];
     newState[playerIndex].addPoints(amount);
     state = newState;
+    locator.get<SaveService>().updatePlayers(state);
   }
   
   void removePointsFromScore(int playerIndex, int amount) {
     final newState = [...state];
     newState[playerIndex].removePoints(amount);
     state = newState;
+    locator.get<SaveService>().updatePlayers(state);
   }
 
 }

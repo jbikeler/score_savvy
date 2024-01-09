@@ -6,7 +6,7 @@ part of 'roundcount_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$roundNotifierHash() => r'6cd0582896a4788cea6c6e5bd14b7ac8a412bad5';
+String _$roundNotifierHash() => r'c3345f9f2feb7f27f7f877edd05c3961d9aaf961';
 
 /// See also [RoundNotifier].
 @ProviderFor(RoundNotifier)
