@@ -98,6 +98,13 @@ flutter:
   - family: Wolfskin
     fonts: 
       - asset: fonts/Wolfskin.otf
+  - family: DMSans
+    fonts: 
+      - asset: fonts/DMSans.ttf
+      - asset: fonts/DMSans-Italic.ttf
+  - family: Chathura
+    fonts: 
+      - asset: fonts/Chathura-ExtraBold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

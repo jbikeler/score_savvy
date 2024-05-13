@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                       child: Consumer(builder: (context, ref, child) { return Text(
                             ref.watch(gameNameNotifierProvider),
                             style: const TextStyle(
-                              fontFamily: 'Scrubland',
+                              fontFamily: 'Wolfskin',
                               color: Colors.white,
                               fontSize: 35
                             ),
@@ -120,8 +120,8 @@ class HomePage extends StatelessWidget {
                         'Round ${ref.watch(roundNotifierProvider)}',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontFamily: 'Wolfskin',
-                          fontSize: 28,
+                          fontFamily: "Wolfskin",
+                          fontSize: 36,
                         ),
                       ),
 //END Round Text
@@ -168,6 +168,7 @@ class HomePage extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 3, // You can change this value to adjust the number of columns
                     shrinkWrap: true,
+                    childAspectRatio: 0.95,
                     children: List.generate(players.length, (index) {
                       return Center(
                         child: SquareCard(playerName: players[index].name, playerColor: players[index].color, playerIndex: index,),

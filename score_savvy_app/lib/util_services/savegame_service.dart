@@ -60,7 +60,6 @@ class SaveService {
     }
   }
 
-
   Future<List<Player>> getCurrentPlayers() async {
     GameCurrent? currentData = await db.gameCurrents.get(1);
     if (currentData != null) {
@@ -170,6 +169,8 @@ class SaveService {
       // Handle error accordingly
     }
   }
+
+
   
   Future<void> updateSettings(AppSettings newSettings) async {
     try {

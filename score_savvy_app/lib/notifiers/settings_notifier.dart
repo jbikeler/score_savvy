@@ -15,6 +15,7 @@ class SettingsNotifier extends _$SettingsNotifier {
   Future<void> _initializeData() async {
     AppSettings saveSettings = await locator.get<SaveService>().getAppSettings();
     state = saveSettings;
+    print('The adjust amount is ' + state.adjustAmount.toString());
   }
 
   @override
